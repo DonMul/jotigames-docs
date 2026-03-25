@@ -10,9 +10,9 @@ The panel owns:
 - super-admin authentication UI
 - global game type availability management
 - platform user lifecycle management (create, update, delete)
+- full game management and live overview (all games, regardless of ownership)
 
 The panel does not own:
-- per-game runtime administration (teams, points, rounds, live map)
 - game rules, scoring, or role decisions
 - websocket event semantics
 
@@ -24,15 +24,38 @@ Source folder:
 - `admin/src/`
 
 Primary files:
-- `admin/src/App.jsx` route shell, feature pages, session verification
-- `admin/src/lib/api.js` API request helper + endpoint wrappers
-- `admin/src/lib/auth.js` local session persistence utilities
+- `admin/src/App.jsx` – route shell, session verification, top-level layout
+- `admin/src/components/DashboardLayout.jsx` – sidebar + header chrome, child route mounting
+- `admin/src/components/Sidebar.jsx` – dark sidebar with nav icons and user info
+- `admin/src/components/UserForm.jsx` – reusable create/edit user form
+- `admin/src/pages/LoginPage.jsx` – login page
+- `admin/src/pages/OverviewPage.jsx` – dashboard overview with stat cards
+- `admin/src/pages/GamesPage.jsx` – all-games table with inline detail, teams, overview, and game management
+- `admin/src/pages/GameModesPage.jsx` – game type availability management
+- `admin/src/pages/UsersPage.jsx` – user list with table, filters, pagination
+- `admin/src/pages/UserCreatePage.jsx` – create user form
+- `admin/src/pages/UserEditPage.jsx` – edit/delete user form
+- `admin/src/components/ui/` – shadcn-style UI primitives (Button, Card, Input, Badge, Table, Select, Label, Separator, Skeleton)
+- `admin/src/lib/api.js` – API request helper + endpoint wrappers
+- `admin/src/lib/auth.js` – local session persistence utilities
+- `admin/src/lib/utils.js` – `cn()` class merge utility, `formatDate`, `normalizeText`, `toCsvValue`, `roleDisplayName`, `gameTypeDisplayName`
+- `admin/src/lib/theme.js` – dark mode detection, persistence, and toggle utility
+
+### UI Stack
+
+- **Tailwind CSS v3** – utility-first styling with PostCSS
+- **shadcn-style components** – custom UI primitives following shadcn/ui patterns (class-variance-authority, clsx, tailwind-merge)
+- **Lucide React** – icon library
+- **@radix-ui/react-slot** – polymorphic Button component
+- **Design**: Light/dark theme with system preference detection, dark sidebar, minimalistic control-panel aesthetic
+- **Dark Mode**: Uses Tailwind `darkMode: 'class'` strategy. System preference (`prefers-color-scheme`) is used as default. Manual toggle persists in localStorage under `jotigames-admin-theme`. Flash prevention via inline `<script>` in `index.html`.
 
 ### Internal Routes
 
 The app route tree is:
 - `/login`
 - `/dashboard`
+- `/dashboard/games`
 - `/dashboard/game-modes`
 - `/dashboard/users`
 - `/dashboard/users/new`
@@ -45,16 +68,33 @@ Unknown paths redirect to `/dashboard` when authenticated or `/login` when unaut
 Login flow:
 1. User submits email/password at `/login`.
 2. App calls `POST /api/auth/user`.
-3. App requires the response to include `ROLE_SUPER_ADMIN`.
-4. Session payload is stored in browser local storage.
+3. App requires the response to include `ROLE_SUPER_ADMIN` or `ROLE_ADMIN`.
+4. Session payload (including `username`) is stored in browser local storage.
 5. App navigates to dashboard.
 
 Stored session key:
 - `jotigames_super_admin_session`
 
+Theme preference key:
+- `jotigames-admin-theme` (values: `light`, `dark`, or absent for system default)
+
 Session verification on app start:
-- If token + `ROLE_SUPER_ADMIN` are present, app calls `GET /api/super-admin/users` as a verification probe.
+- If token + admin/super-admin role are present, app calls `GET /api/super-admin/users` as a verification probe.
 - On `401`/`403`, local session is cleared and user is redirected to `/login`.
+
+### Role Hierarchy
+
+Three backend roles exist:
+- `ROLE_USER` – base role, always assigned
+- `ROLE_ADMIN` – platform admin with access to admin panel and most management functions
+- `ROLE_SUPER_ADMIN` – full platform admin; can additionally manage user roles
+
+Frontend displays human-readable names:
+- `ROLE_USER` → User
+- `ROLE_ADMIN` → Admin
+- `ROLE_SUPER_ADMIN` → Super Admin
+
+Only users with `ROLE_SUPER_ADMIN` can see and edit the Roles section in the user form. The Verification section is visible to all admin-panel users.
 
 ## API Contract (Current)
 
@@ -72,6 +112,17 @@ Super-admin users:
 - `POST /api/super-admin/users`
 - `PUT /api/super-admin/users/:userId`
 - `DELETE /api/super-admin/users/:userId`
+- `GET /api/super-admin/users/:userId/games` – list games owned by user
+
+Game management (reuses existing game endpoints with admin bypass):
+- `GET /api/game` – list all games (admin bypass returns all, not just owned)
+- `GET /api/game/:gameId` – get game detail
+- `GET /api/game/:gameId/teams` – list teams
+- `GET /api/game/:gameId/members` – list members
+- `POST /api/game/:gameId/reset` – reset game
+- `DELETE /api/game/:gameId` – delete game
+- `DELETE /api/game/:gameId/teams/:teamId` – delete team
+- `GET /api/<module-prefix>/:gameId/overview` – game-type-specific live overview
 
 All protected calls send `Authorization: Bearer <token>`.
 
@@ -83,7 +134,21 @@ Displays summary metrics derived from:
 - game type availability list
 - user list
 
-Includes quick links to Game Modes and Users pages.
+### Games (`/dashboard/games`)
+
+Displays all games on the platform (not filtered by ownership) with:
+- search/filter by name, ID, or game type
+- sortable by name, type, start, end
+- pagination controls
+- status badges (Active, Upcoming, Ended)
+- inline expandable detail row per game with:
+  - game metadata (ID, code, type, date range)
+  - live overview summary (entity counts per game type)
+  - game members with roles
+  - teams table with scores, lives, and delete action
+  - game reset action
+
+Platform admins bypass per-game ownership checks via `principal.is_admin` in backend.
 
 ### Game Modes (`/dashboard/game-modes`)
 
@@ -100,7 +165,8 @@ Provides:
 - searchable/sortable/filterable users table
 - paging controls
 - CSV export of currently filtered list
-- detail drawer for selected user
+- inline expandable detail row per user (shown directly below the clicked row)
+- games-owned table within each user detail row
 - links to create/edit user pages
 
 ### User Create/Edit
@@ -113,10 +179,13 @@ Edit:
 - `/dashboard/users/:userId/edit`
 - allows metadata updates and optional password rotation
 - supports deletion with explicit confirmation
+- roles section only visible to users with `ROLE_SUPER_ADMIN`
+- verification section always visible
 
 ## Security Rules
 
-- Super Admin role is required at login and route access time.
+- Admin or Super Admin role is required at login and route access time.
+- Role management (assigning roles to users) is restricted to `ROLE_SUPER_ADMIN` only.
 - Client-side role checks are UX guards only; backend authorization remains authoritative.
 - Any unauthorized backend response must immediately invalidate local session.
 - Do not expose this app’s controls in team or game-admin runtime routes.

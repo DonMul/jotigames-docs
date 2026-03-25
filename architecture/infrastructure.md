@@ -19,6 +19,13 @@ Production topology:
 
 See `system/nginx/` for concrete configs.
 
+### Nginx Security
+
+- **HSTS**: enabled (`max-age=63072000; includeSubDomains; preload`)
+- **Security headers**: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `X-XSS-Protection`, `Permissions-Policy`
+- **Rate limiting**: `auth_api` zone (10 req/s, burst 20) on `/api/auth/`; `general_api` zone (30 req/s, burst 60) on `/api/`
+- **Body size**: `client_max_body_size 2m`
+
 ## Deployment Script
 
 Main script: `system/deploy_update.sh`
