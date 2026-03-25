@@ -1,0 +1,71 @@
+# Infrastructure & Deployment
+
+## High-Level Runtime
+
+Production topology:
+
+- Nginx reverse proxy (TLS termination)
+- Frontend app (user/admin web)
+- Backend FastAPI service
+- WS Node service
+- Database (shared by backend)
+- Cron-managed background workers
+
+## Reverse Proxy Paths
+
+- `/api/*` -> backend service
+- `/ws/*` -> websocket service
+- site roots -> frontend apps
+
+See `system/nginx/` for concrete configs.
+
+## Deployment Script
+
+Main script: `system/deploy_update.sh`
+
+Responsibilities:
+- pull/update repositories
+- install/update dependencies
+- build frontend(s)
+- run backend migrations
+- install managed cron block
+- restart workers and services
+- update nginx configs and certificate mode
+
+## Bootstrap Script
+
+One-time server bootstrap: `system/bootstrap_server.sh`
+
+Responsibilities:
+- install base OS packages
+- clone system repo
+- run deployment flow
+
+## Cron/Worker Model
+
+Managed in:
+- `system/cron/crontab.template`
+- `system/cron/restart_workers.sh`
+
+Current long-running worker examples:
+- `backend/scripts/auto_resolve_pending_actions.py`
+- `backend/scripts/birds_of_prey_auto_drop_eggs.py`
+- `backend/scripts/market_crash_fluctuate_prices.py`
+
+Rule: any new persistent worker must be wired in both files in same change set.
+
+## Environment & Secrets
+
+Critical secret paths:
+- `WS_TO_BACKEND_API_KEY` (WS -> backend verify)
+- `BACKEND_TO_WS_API_KEY` (backend -> WS publish)
+
+Operational rules:
+- never expose secrets in logs/responses
+- validate env presence at startup for critical services
+
+## Observability Basics
+
+- worker logs in `system/logs/`
+- deploy logs via shell output and service restarts
+- websocket and backend logs should be correlated with event names and game/team IDs (never credentials)
