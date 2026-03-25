@@ -92,6 +92,17 @@ Implication:
 - Backend startup applies a compatibility bridge in `app/main.py` by routing FastAPI's coroutine check to `inspect.iscoroutinefunction`.
 - This is a runtime behavior fix, not warning suppression, and keeps tests warning-free on Python 3.14+.
 
+## 10) Frontend locale selection resolves per-locale files first
+
+Why:
+- users can explicitly select many supported locales from the language selector
+- forcing non-NL locales to English breaks expected UX and translation coverage
+
+Implication:
+- frontend i18n must resolve `frontend/src/i18n/locales/<locale>.json` first, then language-only fallback, then `nl`, then `en`
+- locale resolution should normalize both hyphen and underscore formats (for example `en-GB` → `en_GB` → `en`)
+- when using `import.meta.glob`, loader lookups must use full glob keys (for example `../i18n/locales/en.json`), not shorthand locale codes
+
 ## Data & Persistence Decisions
 
 - SQLAlchemy/Alembic are standard for backend schema changes.
@@ -103,6 +114,9 @@ Implication:
 - Leaflet is the default geolocation map framework.
 - Team markers on maps should use team logo markers where team identity is represented.
 - Geolocation pickers should center on browser location if no marker is set.
+- Team dashboard maps default to zoom level `18`.
+- Admin maps (including configure/points maps) default to zoom level `15`.
+- Team and admin maps should center on the current browser geolocation and keep following position updates when location access is available.
 
 ## Documentation Change Rule
 

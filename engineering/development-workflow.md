@@ -77,8 +77,9 @@ Scripts in repository root `scripts/` support value-only translation while prese
 - Generate a target locale from Dutch source files:
 	- `python3 scripts/translate_from_nl.py --lang <locale>`
 	- optional performance tuning: `--batch-size 64 --workers 4` (increase cautiously)
-- Backport Dutch changes to all locales (missing keys + changed value retranslation):
-	- `python3 scripts/sync_locales_from_nl.py`
+- Clean-regenerate all locale files from Dutch source (value-only, keys unchanged):
+	- `python3 scripts/sync_locales_from_nl.py --batch-size 64 --workers 4`
+	- optional source cleanup first: `--normalize-source` (forces source locale values back to Dutch before fan-out)
 
 Source files:
 
@@ -88,7 +89,8 @@ Source files:
 Notes:
 
 - Scripts translate values only; keys and structure remain unchanged.
-- `scripts/sync_locales_from_nl.py` stores Dutch value snapshots in `scripts/.translation_sync_state.json` to detect changed values and retranslate affected keys.
+- `scripts/sync_locales_from_nl.py` runs in start-clean mode and fully rewrites discovered target locales from current Dutch source files.
+- You can include additional locale targets not present on disk with `--locales <comma-separated-codes>`.
 - Requires Python package `deep-translator` (`pip install deep-translator`).
 
 ### Environment notes
