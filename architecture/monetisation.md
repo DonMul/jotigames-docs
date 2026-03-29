@@ -31,6 +31,7 @@ The public pricing page (`/pricing`) also shows the default package explicitly a
 ## Game Minutes
 
 - Each active game (start_at ≤ now ≤ end_at) consumes **1 minute per team per tick** from the game owner's balance.
+- Games owned by users with `ROLE_SUPER_ADMIN` are excluded from minute ticking.
 - Balance is tracked per user per calendar month (`minute_balance` table).
 - When subscription balance is exhausted, top-up minutes are consumed (oldest expiry first).
 - Unlimited plans skip balance checks entirely.
@@ -166,9 +167,12 @@ Created by migration `20260325_0005_create_monetisation_tables.py`:
 | Script | Schedule | Purpose |
 |--------|----------|---------|
 | `backend/scripts/tick_game_minutes.py` | Every 60s | Deduct minutes for active games |
-| `backend/scripts/renew_subscriptions.py` | Daily | Renew subscriptions + process cancellations |
 
-Both support `--loop` mode for continuous operation or single-pass for crontab.
+`renew_subscriptions.py` remains available for manual/reconciliation runs, but is not part of the managed `system/cron/crontab.template` schedule.
+
+`tick_game_minutes.py` passes `owner_id`, `game_id`, deducted `minutes`, and `team_count` into `SubscriptionService.consume_minutes(...)` so minute usage logs stay attributable per game/team snapshot.
+
+Both scripts support `--loop` mode for continuous operation or single-pass for crontab.
 
 ## Cancellation & Grace
 
@@ -189,7 +193,7 @@ backend/app/
 ├── services/subscription_service.py    # Business logic + Stripe
 backend/scripts/
 ├── tick_game_minutes.py                # Minute consumption cron
-├── renew_subscriptions.py              # Renewal + cancellation cron
+├── renew_subscriptions.py              # Manual/reconciliation renewal utility
 backend/tests/
 ├── test_subscription_full_unit.py      # 103 unit tests
 admin/src/
