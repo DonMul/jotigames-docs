@@ -70,6 +70,13 @@ Manual per codebase:
 - E2E: `cd e2e && npm test`
 - Docs screenshots refresh: `cd e2e && npm run docs:screenshots`
 
+E2E fixture hygiene:
+
+- Playwright helpers create isolated `E2E Cleanup ...` game/team fixtures per test.
+- Fixtures must be deleted in test `finally` blocks via `context.cleanup()`.
+- Stale `E2E Cleanup ...` games from interrupted runs are removed automatically at the start of fixture creation.
+- Automatic stale cleanup skips fresh fixtures and only deletes `E2E Cleanup ...` games older than 30 minutes to avoid parallel-worker race conditions.
+
 ### Locale translation automation
 
 Scripts in repository root `scripts/` support value-only translation while preserving locale key contracts.

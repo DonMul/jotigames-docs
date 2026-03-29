@@ -8,11 +8,15 @@ For detailed game-page descriptions and screenshots, see [../games/index.md](../
 
 - `/` Home
 - `/about`
+- `/pricing`
 - `/faq`
 - `/register`
 - `/login`
 - `/team-login`
 - `/info/games/:slug`
+
+Notes:
+- When monetisation is disabled (`ENABLE_MONETISATION=false`), pricing links are hidden from navigation and `/pricing` redirects to `/`.
 
 ## Team Routes (`/team/*`)
 
@@ -32,6 +36,7 @@ For detailed game-page descriptions and screenshots, see [../games/index.md](../
 ### Core Game Management
 
 - `/admin/games`
+  - primary actions: create game (subscription action moved to account settings)
 - `/admin/games/new`
 - `/admin/games/:gameId`
 - `/admin/games/:gameId/edit`
@@ -63,6 +68,18 @@ For detailed game-page descriptions and screenshots, see [../games/index.md](../
 ### Admin Team Play Helper
 
 - `/admin/games/:gameId/teams/:teamId/play`
+
+## Account Routes (`/account/*`)
+
+- `/account/profile`
+  - user self-service profile (email, display name, password)
+- `/account/subscription`
+  - subscription management page (moved from direct `/admin/subscription` access)
+- `/account/payments`
+  - payment history
+
+Notes:
+- When monetisation is disabled, account sidebar hides `subscription` and `payments`, and direct navigation to those routes redirects to `/account/profile`.
 
 ## Super Admin App (`admin/`)
 

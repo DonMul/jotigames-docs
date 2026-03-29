@@ -17,6 +17,13 @@ Production topology:
 - `/ws/*` -> websocket service
 - site roots -> frontend apps
 
+## Reverse Proxy Hosts
+
+- `jotigames.nl` + `www.jotigames.nl` -> frontend app
+- `admin.jotigames.nl` -> admin app
+- `api.jotigames.nl` -> backend FastAPI app
+- `https://api.jotigames.nl/docs` and `https://api.jotigames.nl/openapi.json` are IP-restricted to `149.143.99.118` at nginx layer
+
 See `system/nginx/` for concrete configs.
 
 ### Nginx Security
