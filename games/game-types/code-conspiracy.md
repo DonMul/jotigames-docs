@@ -14,6 +14,7 @@ Crack opponent codes first, or finish with the highest score.
 
 ## Relevant pages
 
+- Public info page: `/info/games/code-conspiracy`
 - Admin configure: `/admin/code-conspiracy/:gameId/configure`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -42,6 +43,7 @@ Service override in `backend/app/services/code_conspiracy_service.py` adds:
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in target-team code attacks, configurable code length, attempt limits, and penalty-driven score pressure.
 - Configure page: code length/charset, cooldown, points, penalties, win mode.
 - Team dashboard panel: guess submission and outcome tracking.
 

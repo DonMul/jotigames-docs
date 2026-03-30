@@ -13,12 +13,14 @@ Reach the target with the fewest markers.
 
 ## Relevant pages
 
+- Public info page: `/info/games/blind-hike`
 - Admin configure: `/admin/blindhike/:gameId/configure`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in distorted map rules, finish radius pressure, and marker-efficiency scoring.
 - Configure page: target, transforms, marker limits/cooldowns, finish radius.
 - Team dashboard panel: marker placement and progress to finish.
 

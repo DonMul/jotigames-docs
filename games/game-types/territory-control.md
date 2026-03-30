@@ -8,10 +8,11 @@ Maximize score through capture and hold ticks.
 
 1. Admin configures zones and capture values.
 2. Teams capture zones for immediate points.
-3. Owned zones produce recurring points.
+3. Backend worker awards recurring hold points for owned active zones on each tick.
 
 ## Relevant pages
 
+- Public info page: `/info/games/territory-control`
 - Admin zones: `/admin/territory-control/:gameId/zones`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -39,6 +40,7 @@ Service override in `backend/app/services/territory_control_service.py` adds:
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in zone ownership, capture-point scoring, and live control swings on the map.
 - Zones page: define control zones and scoring values.
 - Team dashboard panel: capture opportunities and territorial progress.
 

@@ -12,6 +12,7 @@ Discover and claim hidden beacons for points.
 
 ## Relevant pages
 
+- Public info page: `/info/games/echo-hunt`
 - Admin beacons: `/admin/echo-hunt/:gameId/beacons`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -39,6 +40,7 @@ Service override in `backend/app/services/echo_hunt_service.py` adds:
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in hidden beacon discovery, claim radius, and live claim-based scoring.
 - Beacons page: CRUD for beacons, detection radius, points, and hints.
 - Team dashboard panel: proximity, discovery, and claim feedback.
 

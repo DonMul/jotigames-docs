@@ -16,8 +16,14 @@ Rule: add every new worker to both files.
   - Exploding Kittens pending action timeout resolver.
 - `backend/scripts/birds_of_prey_auto_drop_eggs.py`
   - Periodic Birds of Prey egg drops.
+- `backend/scripts/courier_rush_spawn_points.py`
+  - Maintains random-mode Courier Rush pickup/dropoff map points inside configured spawn polygon.
 - `backend/scripts/market_crash_fluctuate_prices.py`
   - Continuous Market Crash point-price fluctuation worker.
+- `backend/scripts/pandemic_response_spawn_hotspots.py`
+  - Maintains Pandemic Response active hotspot/pickup counts and applies timed escalation penalties.
+- `backend/scripts/territory_control_tick_scores.py`
+  - Awards recurring Territory Control hold-tick points for owned active zones.
 
 ## Deploy/Restart Flow
 

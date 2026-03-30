@@ -7,11 +7,13 @@ Achieve the highest response score by resolving hotspots.
 ## Core flow
 
 1. Admin configures hotspot and severity model settings.
-2. Teams enter hotspot areas to resolve incidents.
-3. Response scoring and penalties are applied by config.
+2. Backend worker maintains target active hotspots/pickups and escalates unresolved hotspots on the configured interval.
+3. Teams enter hotspot areas to resolve incidents.
+4. Response scoring and overflow penalties are applied by config.
 
 ## Relevant pages
 
+- Public info page: `/info/games/pandemic-response`
 - Admin hotspots/config: `/admin/pandemic-response/:gameId/hotspots`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -45,7 +47,8 @@ Service override in `backend/app/services/pandemic_response_service.py` adds:
 
 ## Page descriptions
 
-- Hotspots/config page: center/spawn rules, severity timing, penalties, and pickup count.
+- Public info page: detailed landing/how-to-play page grounded in hotspot severity, pickup collection, and resolve actions under live response pressure.
+- Hotspots/config page: center/spawn rules, severity timing, penalties, pickup count, and spawn-area polygon editing via map clicks + draggable vertices (double-click vertex removal and closest-edge insertion for new points) with no visible raw GeoJSON field.
 - Team dashboard panel: hotspot resolution feedback and team score effects.
 
 ## Screenshot

@@ -64,7 +64,10 @@ Managed in:
 Current long-running worker examples:
 - `backend/scripts/auto_resolve_pending_actions.py`
 - `backend/scripts/birds_of_prey_auto_drop_eggs.py`
+- `backend/scripts/courier_rush_spawn_points.py`
 - `backend/scripts/market_crash_fluctuate_prices.py`
+- `backend/scripts/pandemic_response_spawn_hotspots.py`
+- `backend/scripts/territory_control_tick_scores.py`
 
 Rule: any new persistent worker must be wired in both files in same change set.
 

@@ -12,6 +12,7 @@ Collect resources and maximize score.
 
 ## Relevant pages
 
+- Public info page: `/info/games/resource-run`
 - Admin nodes: `/admin/resource-run/:gameId/nodes`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -39,6 +40,7 @@ Service override in `backend/app/services/resource_run_service.py` adds:
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in node claiming, fast route rhythm, and direct server-side resource scoring.
 - Nodes page: CRUD for resource nodes (type, radius, points).
 - Team dashboard panel: node interaction state and score progression.
 

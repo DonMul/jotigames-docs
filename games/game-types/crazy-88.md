@@ -13,6 +13,7 @@ Score the most points via approved task submissions.
 
 ## Relevant pages
 
+- Public info page: `/info/games/crazy-88`
 - Admin tasks: `/admin/crazy88/:gameId/tasks`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -40,6 +41,7 @@ Service override in `backend/app/services/crazy88_service.py` adds:
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in task submission flow, proof review states, and admin approval scoring.
 - Tasks page: configure visibility mode, task list, and review queues.
 - Team dashboard panel: task execution and submission status.
 
@@ -57,6 +59,9 @@ Shows task execution/submission state and team-facing approval progress.
 
 ### Admin live overview (`/admin/games/:gameId/live-overview`)
 
-Shows submission intake, review pressure, and team score movement.
+Shows team score movement and active review assignment threads.
+
+- No full task-management table on live overview (task editing/reordering stays on `/admin/crazy88/:gameId/tasks`).
+- Reviewer workflow includes accept/reject actions per pending submission and unlock for assigned-review recovery.
 
 ![Crazy 88 live overview](../screenshots/crazy-88-live-overview.png)

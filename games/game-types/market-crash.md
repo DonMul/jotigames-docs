@@ -13,6 +13,7 @@ Maximize profit and cash by trading resources at market points.
 
 ## Relevant pages
 
+- Public info page: `/info/games/market-crash`
 - Admin points overview: `/admin/market-crash/:gameId/points`
 - Admin point create: `/admin/market-crash/:gameId/points/new`
 - Admin point edit: `/admin/market-crash/:gameId/points/:pointId/edit`
@@ -21,6 +22,7 @@ Maximize profit and cash by trading resources at market points.
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in live price ticks, buy/sell timing, inventory pressure, and cash management.
 - Points overview page: resources table, point list, and map-based point management.
 - Point form pages: create/edit per-point resource buy/sell settings.
 - Team dashboard panel: nearby points, inventory, cash, trade actions.

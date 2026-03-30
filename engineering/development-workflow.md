@@ -86,6 +86,9 @@ Scripts in repository root `scripts/` support value-only translation while prese
 	- optional performance tuning: `--batch-size 64 --workers 4` (increase cautiously)
 - Clean-regenerate all locale files from Dutch source (value-only, keys unchanged):
 	- `python3 scripts/sync_locales_from_nl.py --batch-size 64 --workers 4`
+	- optional extra parallelism per locale: `--locale-workers 2`
+	- global request throttling (recommended): `--max-rps 1.5` (set `0` to disable)
+	- retry jitter to reduce synchronized retries: `--retry-jitter 0.25`
 	- optional source cleanup first: `--normalize-source` (forces source locale values back to Dutch before fan-out)
 
 Source files:
@@ -97,6 +100,11 @@ Notes:
 
 - Scripts translate values only; keys and structure remain unchanged.
 - `scripts/sync_locales_from_nl.py` runs in start-clean mode and fully rewrites discovered target locales from current Dutch source files.
+- `scripts/sync_locales_from_nl.py` now reuses a per-locale translation cache across frontend+backend content to avoid duplicate remote translations and improve throughput.
+- `scripts/sync_locales_from_nl.py` now includes a global rate limiter and adaptive cooldown for translator 429/rate-limit responses to avoid translation skips caused by request storms.
+- On Apple Silicon laptops (e.g. M1 8-core), a practical stable baseline is:
+	- `python3 scripts/sync_locales_from_nl.py --batch-size 40 --workers 4 --locale-workers 1 --max-rps 1.5`
+- Runtime progress logs now include locale and batch progress, e.g. `Starting locale fr (1/20)` and `Processing locale batch 3/18 (fr)`.
 - You can include additional locale targets not present on disk with `--locales <comma-separated-codes>`.
 - Requires Python package `deep-translator` (`pip install deep-translator`).
 
@@ -104,6 +112,7 @@ Notes:
 
 - Ensure Node and npm are available in `PATH` (for nvm users: source nvm before running JS tests).
 - Backend dependency compatibility: keep `chardet<6` to avoid `RequestsDependencyWarning` with `requests` in Python 3.14 virtualenvs.
+- Backend tests are intentionally isolated from development MySQL data: `backend/tests/conftest.py` forces `DATABASE_URL=sqlite:///./.pytest-jotigames.db` and `APP_ENV=test`, and `test_endpoint_smoke.py` refuses destructive schema resets on non-sqlite backends.
 - E2E targets hosted dev environments by default:
 	- frontend: `http://localhost:5173`
 	- admin: `http://localhost:5174`

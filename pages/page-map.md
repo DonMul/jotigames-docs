@@ -17,6 +17,10 @@ For detailed game-page descriptions and screenshots, see [../games/index.md](../
 
 Notes:
 - When monetisation is disabled (`ENABLE_MONETISATION=false`), pricing links are hidden from navigation and `/pricing` redirects to `/`.
+- Game type links in the public navigation are displayed alphabetically by their localized display name.
+- `/info/games/:slug` hero renders a larger game logo directly (without the previous boxed logo container).
+- `/info/games/birds-of-prey` uses a bespoke Birds of Prey landing/how-to-play layout grounded in the live gameplay rules: egg visibility radius, protection radius, auto-drop pacing, and live leaderboard pressure.
+- `/info/games/:slug` now provides deep game-specific landing/how-to-play content for every supported game type. Birds of Prey keeps its dedicated bespoke implementation, while the remaining game types render through a shared detailed page shell with locale-driven copy assembled in `GameInfoPage.jsx` from Dutch translation keys grounded in live backend rules.
 
 ## Team Routes (`/team/*`)
 
@@ -54,10 +58,15 @@ Notes:
 - Territory Control: `/admin/territory-control/:gameId/zones`
 - Blind Hike: `/admin/blindhike/:gameId/configure`
 - Echo Hunt: `/admin/echo-hunt/:gameId/beacons`
+  - `/admin/echo-hunt/:gameId/beacons/new`
+  - `/admin/echo-hunt/:gameId/beacons/:beaconId/edit`
 - Checkpoint Heist: `/admin/checkpoint-heist/:gameId/checkpoints`
 - Courier Rush: `/admin/courier-rush/:gameId/configure`
 - Pandemic Response: `/admin/pandemic-response/:gameId/hotspots`
 - Market Crash:
+  - `/admin/market-crash/:gameId/resources`
+  - `/admin/market-crash/:gameId/resources/new`
+  - `/admin/market-crash/:gameId/resources/:resourceId/edit`
   - `/admin/market-crash/:gameId/points`
   - `/admin/market-crash/:gameId/points/new`
   - `/admin/market-crash/:gameId/points/:pointId/edit`

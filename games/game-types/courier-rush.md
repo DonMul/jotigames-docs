@@ -7,11 +7,13 @@ Optimize pickup/dropoff logistics to maximize score.
 ## Core flow
 
 1. Admin configures pickup/dropoff behavior and routing mode.
-2. Teams move to pickups and complete deliveries.
-3. Routing efficiency determines score outcomes.
+2. In `random` mode, backend worker spawns and maintains pickup/dropoff map points inside the configured spawn polygon.
+3. Teams move to pickups and complete deliveries.
+4. Routing efficiency determines score outcomes.
 
 ## Relevant pages
 
+- Public info page: `/info/games/courier-rush`
 - Admin configure: `/admin/courier-rush/:gameId/configure`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
@@ -45,7 +47,8 @@ Service override in `backend/app/services/courier_rush_service.py` adds:
 
 ## Page descriptions
 
-- Configure page: pickup mode, dropoff mode, active pickup constraints, and location entities.
+- Public info page: detailed landing/how-to-play page grounded in pickup/drop-off mission chains, route planning, and server-side delivery scoring.
+- Configure page: pickup mode, dropoff mode, active pickup constraints, and pickup spawn polygon editing via map clicks + draggable vertices (double-click vertex removal and closest-edge insertion for new points) with no visible raw GeoJSON field.
 - Team dashboard panel: mission state and delivery actions.
 
 ## Screenshot

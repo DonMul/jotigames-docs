@@ -13,6 +13,7 @@ End with the most lives.
 
 ## Relevant pages
 
+- Public info page: `/info/games/exploding-kittens`
 - Admin cards: `/admin/games/:gameId/cards`
 - Admin card PDF tools: `/admin/games/:gameId/cards/pdf`
 - Admin live overview: `/admin/games/:gameId/live-overview`
@@ -21,6 +22,7 @@ End with the most lives.
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in live hand state, pending actions, lives, reaction cards, and scan-linked physical card play.
 - Cards page: manage card pools and card operations per game.
 - Card PDF tools page: export/print card assets for physical play.
 - Team dashboard panel: card hand, pending actions, combo handling.

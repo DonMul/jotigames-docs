@@ -8,6 +8,7 @@ This section documents each game in a separate file, including core flow, releva
 
 ## Core Runtime Pages
 
+- [Public game info page (`/info/games/:slug`)](pages/public-game-info.md)
 - [Team Dashboard (`/team`)](pages/team-dashboard.md)
 - [Admin Live Overview (`/admin/games/:gameId/live-overview`)](pages/admin-live-overview.md)
 - [Game setup and configuration surfaces](pages/game-configuration.md)

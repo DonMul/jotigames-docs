@@ -65,6 +65,8 @@ One-off minute packages purchasable by users:
   - success callback updates pending record to `succeeded`.
   - failure callback updates pending record to `failed`.
 - If Stripe invoice payment fails during a plan switch upgrade, backend restores the user to the previous tier (rollback) and refreshes local minute allocation for that restored plan.
+- Frontend payment history surfaces `pending` as in-progress (non-error styling) and only uses failure styling for `failed` records.
+- Payment descriptions returned as semicolon-separated backend metadata are rendered as human-readable bullet separators (` • `) in account payment lists.
 
 ### Upgrade vs downgrade behavior
 

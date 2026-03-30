@@ -12,12 +12,14 @@ Progress ordered checkpoints and maximize checkpoint points.
 
 ## Relevant pages
 
+- Public info page: `/info/games/checkpoint-heist`
 - Admin checkpoints: `/admin/checkpoint-heist/:gameId/checkpoints`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
 
 ## Page descriptions
 
+- Public info page: detailed landing/how-to-play page grounded in ordered checkpoint progression, capture radius, and server-side checkpoint scoring.
 - Checkpoints page: define checkpoint geometry, points, and activation state.
 - Team dashboard panel: active checkpoint progress and completion status.
 

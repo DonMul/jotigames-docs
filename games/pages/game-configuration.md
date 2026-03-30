@@ -17,10 +17,17 @@ From the game details hub, admins navigate to the game-type specific configurati
 - Blind Hike: `/admin/blindhike/:gameId/configure`
 - Resource Run: `/admin/resource-run/:gameId/nodes`
 - Territory Control: `/admin/territory-control/:gameId/zones`
-- Market Crash: `/admin/market-crash/:gameId/points`
+- Market Crash:
+	- `/admin/market-crash/:gameId/resources`
+	- `/admin/market-crash/:gameId/resources/new`
+	- `/admin/market-crash/:gameId/resources/:resourceId/edit`
+	- `/admin/market-crash/:gameId/points`
 - Crazy 88: `/admin/crazy88/:gameId/tasks`
 - Courier Rush: `/admin/courier-rush/:gameId/configure`
-- Echo Hunt: `/admin/echo-hunt/:gameId/beacons`
+- Echo Hunt:
+	- `/admin/echo-hunt/:gameId/beacons`
+	- `/admin/echo-hunt/:gameId/beacons/new`
+	- `/admin/echo-hunt/:gameId/beacons/:beaconId/edit`
 - Checkpoint Heist: `/admin/checkpoint-heist/:gameId/checkpoints`
 - Pandemic Response: `/admin/pandemic-response/:gameId/hotspots`
 - Birds of Prey: `/admin/birds-of-prey/:gameId/configure`

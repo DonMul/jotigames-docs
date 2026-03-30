@@ -14,12 +14,14 @@ Score by dropping protected eggs and destroying enemy eggs.
 
 ## Relevant pages
 
+- Public info page: `/info/games/birds-of-prey`
 - Admin configure: `/admin/birds-of-prey/:gameId/configure`
 - Admin live overview: `/admin/games/:gameId/live-overview`
 - Team dashboard panel: `/team`
 
 ## Page descriptions
 
+- Public info page: marketing + how-to-play explainer grounded in live game rules (egg visibility radius, protection radius, auto-drop pacing, and live leaderboard pressure).
 - Configure page: visibility/protection radius and auto-drop interval.
 - Team dashboard panel: own eggs, visible enemy eggs, drop/destroy actions.
 
